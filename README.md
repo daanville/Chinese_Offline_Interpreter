@@ -5,14 +5,13 @@ This application is intended to be used either in Chinese lessons, or as a tool 
 
 ## Features
 
-- Real-time interpretation from Chinese to English.
-- Archiving the translations.
+- Real-time interpretation from Chinese to English, adding Pinyin and character by character translation.
 - Capability to save the entire translation session to either a .txt file or .pdf.
 
 ### Prerequisites
 
 This program is written in Python 3.10.
-See the requirements.txt for needed packages.
+See the requirements.txt for required packages.
 
 ### How to Use the Interpreter
 
@@ -25,6 +24,8 @@ See the requirements.txt for needed packages.
 ### How to Use the pdfCreator standalone via commandline
 
 The `pdfCreator.py` script is a command-line utility that transforms Chinese text into a PDF containing both the Chinese text and its corresponding Pinyin. The Chinese input text can be provided either as a file, or directly via the commandline.
+
+Please note that the pdfCreator can be used stand-alone, without running the main.py (interpreter script)
 
 ## Parameters
 | Parameter | Default Value | Description |
