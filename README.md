@@ -1,6 +1,6 @@
-# Chinese-Offline-Interpreter-and-Pdf-Exporter
+# Chinese-Offline-Interpreter
 
-Chinese Offline Interpreter is a live Chinese to English interpreter, utilizing the Chinese-English dictionary(cedict library) to provide real-time translations. The interpreter will update with every keystroke in the input field. The entire project is completely offline and uses no online services. Please note that it does not translate whole sentences, instead it only give character by character translations. The project's GUI is built using the tkinter library in python. The pdf Creator can also be used standalone (via commandline).
+Chinese Offline Interpreter is a live Chinese to English interpreter, utilizing an open source Chinese-English dictionary (cedict library) to provide real-time translations. The interpreter will update with every keystroke in the input field. The entire project is completely offline and uses no online services. Please note that it does not translate whole sentences, instead it only give character by character translations. The project's GUI is built using the tkinter library in python. The pdf Creator can also be used standalone (via commandline).
 This application is intended to be used either in Chinese lessons, or as a tool for Chinese learners to quickly grasp pronounciation / meaning of a Chinese text.
 
 ## Features
@@ -17,14 +17,14 @@ See the requirements.txt for needed packages.
 ### How to Use the Interpreter
 
 1. Clone or download this repository.
-2. Open the interpreter.py file in your Python IDE (like PyCharm) or run it from your terminal.
+2. Open the main.py file in any Python IDE, or run it directly from your terminal.
 3. This will open up a GUI. You can start typing Chinese text into the green input field at the top. As you type, you will see the pinyin and character by character English translation below, updating with every keystroke.
 4. Pressing the Enter key will push the content of the input field to the archive frame below, this shows both the Chinese text and its pinyin.
 5. The "Save to File" button at the bottom allows you to save your whole session either to a .txt file or to a .pdf file.
 
 ### How to Use the pdfCreator standalone via commandline
 
-The `pdfCreator.py` script is a command-line utility that transforms Chinese text into a PDF with a simplified Chinese text and its corresponding Pinyin. The Chinese text can be provided either as a file, or directly in the commandline.
+The `pdfCreator.py` script is a command-line utility that transforms Chinese text into a PDF containing both the Chinese text and its corresponding Pinyin. The Chinese input text can be provided either as a file, or directly via the commandline.
 
 ## Parameters
 | Parameter | Default Value | Description |
