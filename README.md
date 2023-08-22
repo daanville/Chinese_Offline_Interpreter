@@ -11,16 +11,8 @@ This application is intended to be used either in Chinese lessons, or as a tool 
 
 ### Prerequisites
 
-This program is written in Python 3.10. See the requirements.txt for needed packages.
-
-Use pip to install the required packages:
-
-```sh
-pip install tkinter
-pip install pinyin
-pip install reportlab
-pip install argparse
-```
+This program is written in Python 3.10.
+See the requirements.txt for needed packages.
 
 ### How to Use the Interpreter
 
