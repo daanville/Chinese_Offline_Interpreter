@@ -1,6 +1,6 @@
 # Chinese-Offline-Interpreter-and-Pdf-Exporter
 
-Chinese Offline Interpreter and Pdf Exporter is a live Chinese to English interpreter, utilizing the Chinese-English dictionary(cedict library) to provide real-time translations. The interpreter will update with every keystroke in the input field. The entire project is completely offline and uses no online services. Please note that it does not translate whole sentences, instead it only give character by character translations. The project's GUI is built using the tkinter library in python. The pdf Creator can also be used standalone (via commandline).
+Chinese Offline Interpreter is a live Chinese to English interpreter, utilizing the Chinese-English dictionary(cedict library) to provide real-time translations. The interpreter will update with every keystroke in the input field. The entire project is completely offline and uses no online services. Please note that it does not translate whole sentences, instead it only give character by character translations. The project's GUI is built using the tkinter library in python. The pdf Creator can also be used standalone (via commandline).
 This application is intended to be used either in Chinese lessons, or as a tool for Chinese learners to quickly grasp pronounciation / meaning of a Chinese text.
 
 ## Features
