@@ -38,7 +38,7 @@ class Interpreter:
         self.input_color = '#EEEECC'
         self.pinyin_color = "#CCCCEE"
         self.enough_space_color = "#338833"
-        self.alert_color = "#FF0000"
+        self.alert_color = "#FF8833"
 
         # Load the dictionary for character-per-character translation
         self.dict = Dict()
@@ -93,9 +93,9 @@ class Interpreter:
         self.window_width = self.root.winfo_width()
 
     def get_color(self, column_width):
-        """Calculates an} interpolated color between self.enough_space_color and self.alert_color. """
-        upper_limit = 150
-        lower_limit = 100
+        """Calculates an interpolated color between self.enough_space_color and self.alert_color. """
+        upper_limit = 130
+        lower_limit = 80
 
         # Convert hexadecimal to RGB
         rgb_bg_color = hex_to_rgb(self.enough_space_color[1:])
@@ -226,10 +226,10 @@ class Interpreter:
     def key_pressed(self, event):
         """Checks if the user has pressed the enter key. If so, the text from the entry is moved to the archive frame.
         Also, refocuses on the input field in case the user has clicked anywhere else on the window."""
-        if len(event.char) > 0:
-            if ord(event.char) == 13:
-                self.drop_current_line_to_archive()
+        if event.keysym == 'Return':
+            self.drop_current_line_to_archive()
         self.entry_chinese_text.focus()
+
 
     def save_to_file(self):
         """Opens a file dialog and saves all text the user has entered to a file (either .pdf or .txt)"""

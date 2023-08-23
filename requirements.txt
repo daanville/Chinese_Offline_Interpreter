@@ -1,2 +1,2 @@
 pinyin==0.4.0
-reportlab==3.5.68
+reportlab==4.0.4
