@@ -33,59 +33,73 @@ class Interpreter:
     def __init__(self):
         """Sets up the tkinter window and prepares it for the user input."""
         # Define colors
-        self.bg_color = '#333333'
+        self.bg_color = '#444444'
         self.fg_color = '#AAAAAA'
         self.input_color = '#EEEECC'
         self.pinyin_color = "#CCCCEE"
-        self.enough_space_color = "#338833"
-        self.alert_color = "#FF8833"
-
+        self.enough_space_color = "#002200"
+        self.crowded_color = "#662200"
+        self.archive_bg_color = '#333333'
         # Load the dictionary for character-per-character translation
         self.dict = Dict()
-
         # Set up variables for input text and live interpretation frame columns
         self.columns = []
         self.full_chinese_text = ""
-
-        # Create the tkinter root window
+        # Create  and configure the tkinter root window
         self.root = Tk("Hanzi Interpreter")
         self.root.iconbitmap('res/icon.ico')
         screen_width = self.root.winfo_screenwidth()
+        self.window_width = screen_width - 200
         self.input_content = StringVar()
-        self.root.geometry(f"{screen_width - 200}x1000+100+100")
+        self.root.geometry(f"{self.window_width}x800+100+100")
         self.root.configure(background=self.bg_color)
-        self.window_width = 0
         self.root.bind('<Configure>', self.update_window_width)
 
-        # Populate the root window
+
+        # Populate the root window: Text Input
         self.input_content.set("你好")
         self.input_content.trace("w", self.text_changed)
-        self.entry_chinese_text = Entry(self.root, textvariable=self.input_content, bg=self.bg_color,
+        self.frame_input = Frame(self.root, width=self.window_width,borderwidth=0, bg=self.bg_color)
+        self.frame_input.grid(row=0, column=0, stick = "nswe")
+        self.entry_chinese_text = Entry(self.frame_input, textvariable=self.input_content, bg=self.bg_color,
                                         fg=self.input_color, justify='center')
-        self.entry_chinese_text.grid(row=0, column=0, sticky="we", ipady=12)
-        self.entry_chinese_text.config(font=("Courier", 35))
-        self.frame_live_interpretation = Frame(self.root, width=screen_width, borderwidth=0, bg=self.bg_color)
-        self.frame_live_interpretation.grid(row=1, column=0)
-        self.frame_archive = Frame(self.root, width=screen_width, borderwidth=0)
-        self.frame_archive.grid(row=2, column=0, sticky="we")
-        self.archive = Text(self.frame_archive, bg=self.bg_color, fg=self.fg_color)
-        self.archive.pack(fill="both")
-        self.archive.config(state='disabled')
-        self.root.grid_columnconfigure(0, weight=1)
-        self.button_save_pdf = Button(self.root, text="Save to File", command=self.save_to_file)
-        self.button_save_pdf.grid(row=3, column=0, sticky="wes")  # pack(fill="x")
-        self.button_save_pdf.config(font=("Courier", 30))
-        self.frame_archive.grid_columnconfigure(0, weight=1)
+        self.entry_chinese_text.grid(row=0, column=0, sticky = "nwe")
+        self.entry_chinese_text.config(font=("Courier", 45))
+        self.frame_input.grid_columnconfigure(0, weight=1)
         self.entry_chinese_text.bind("<FocusIn>", self.select_text)
         self.entry_chinese_text.focus()
+
+        # Populate the root window: Live Interpretation
+        self.frame_live_interpretation = Frame(self.root, width=self.window_width,  borderwidth=0, bg=self.bg_color)
+        self.frame_live_interpretation.grid(row=1, column=0, sticky = "nswe")
+        self.frame_live_interpretation.grid_columnconfigure(0, weight=1)
+
+        # Populate the root window: Archive
+        self.frame_archive = Frame(self.root, width=self.window_width,  borderwidth=0)
+        self.frame_archive.grid(row=2, column=0, sticky="swe")
+
+        self.archive_title = Label(self.frame_archive, text = "Archive", bg = self.enough_space_color, fg=self.pinyin_color, padx=3, pady=5)
+        self.archive_title.grid(row=0, column=0, sticky="new")
+        self.archive_title.config(font=("Courier", 16))
+
+        self.archive = Text(self.frame_archive, bg=self.archive_bg_color, fg=self.fg_color)
+        self.archive.grid(row=1, column=0, sticky="ew")
+        self.archive.config(state='disabled')
+
+        # Populate the root window: Save Button
+        self.button_save_pdf = Button(self.frame_archive, text="Save Archive to File", command=self.save_to_file)
+        self.button_save_pdf.grid(row=2, column=0, sticky="sew")
+        self.button_save_pdf.config(font=("Courier", 40))
+
+        self.frame_archive.grid_columnconfigure(0, weight=1)
+
         self.root.bind("<Key>", self.key_pressed)
+        self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_rowconfigure(1, weight=1)
-        self.root.grid_rowconfigure(2, weight=5)
-        self.root.grid_rowconfigure(3, weight=2)
+        self.root.grid_rowconfigure(2, weight=1)
         self.text_changed(initial=True)
         self.root.update()
-
         self.root.mainloop()
 
     def update_window_width(self, event):
@@ -93,23 +107,23 @@ class Interpreter:
         self.window_width = self.root.winfo_width()
 
     def get_color(self, column_width):
-        """Calculates an interpolated color between self.enough_space_color and self.alert_color. """
+        """Calculates an interpolated color between self.enough_space_color and self.archive_color. """
         upper_limit = 130
         lower_limit = 80
 
         # Convert hexadecimal to RGB
         rgb_bg_color = hex_to_rgb(self.enough_space_color[1:])
-        rgb_alert_color = hex_to_rgb(self.alert_color[1:])
+        rgb_archive_color = hex_to_rgb(self.crowded_color[1:])
 
         # Handling the edge cases
         if column_width >= upper_limit:
             return self.enough_space_color
         elif column_width <= lower_limit:
-            return self.alert_color
+            return self.crowded_color
 
         # Linear interpolation
         ratio = (column_width - lower_limit) / (upper_limit - lower_limit)  # will range from 0 to 1
-        result_color = tuple(int(ratio * bg + (1 - ratio) * alert) for bg, alert in zip(rgb_bg_color, rgb_alert_color))
+        result_color = tuple(int(ratio * bg + (1 - ratio) * archive) for bg, archive in zip(rgb_bg_color, rgb_archive_color))
 
         # Converting back to hexadecimal
         return '#' + rgb_to_hex(result_color)
@@ -124,10 +138,13 @@ class Interpreter:
             self.entry_chinese_text.configure(bg=self.get_color(column_width))
 
     def clear_frame_live_interpretation(self):
-        # Clears the live interpretation frame
-        for col in self.columns:
-            for element in col:
-                element.destroy()
+        # Clear the live interpretation frame
+        for widget in self.frame_live_interpretation.winfo_children():
+            widget.destroy()
+        # Reset the grid configuration for the columns
+        for i in range(self.frame_live_interpretation.grid_size()[0]):
+            self.frame_live_interpretation.grid_columnconfigure(i, weight=0)
+        # Clear the list of columns
         self.columns = []
 
     def get_translation(self, hanzi):
@@ -172,6 +189,7 @@ class Interpreter:
 
     def text_changed(self, *args, initial=False):
         """updates the live interpretation frame"""
+        #print ("Text Changed-------------------------")
         # first, remove previous columns
         self.clear_frame_live_interpretation()
         user_input = self.entry_chinese_text.get()
@@ -188,6 +206,7 @@ class Interpreter:
 
         # place all columns in the live interpretation frame
         for j in range(len(self.columns)):
+            #print(f"arranging colum {j+1} of {len(self.columns)}")
             self.frame_live_interpretation.grid_columnconfigure(j, weight=1)
 
         # color the input field according to how full it is.
